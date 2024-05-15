@@ -1,6 +1,15 @@
-FROM debian:bullseye
+FROM debian:bookworm
 
-RUN apt update && apt install php-fpm -y 
-RUN mkdir -p /run/php/
-RUN sed -i "s/listen = \/run\/php\/php7.4-fpm.sock/listen = 0.0.0.0:9000/" /etc/php/7.4/fpm/pool.d/www.conf
-CMD [ "php-fpm7.4", "-F" ]
+RUN apt-get update && apt-get -y install curl \
+						php-fpm \
+						php-mysql \
+						mariadb-client \
+						vim
+
+RUN sed -i "s/listen = \/run\/php\/php8.2-fpm.sock/listen = 0.0.0.0:9000/" /etc/php/8.2/fpm/pool.d/www.conf
+COPY tools/script.sh .
+
+RUN	chmod +x script.sh
+
+# CMD [ "php-fpm8.2", "-F" ]
+CMD [ "./script.sh" ]
