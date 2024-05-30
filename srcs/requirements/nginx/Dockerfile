@@ -1,7 +1,7 @@
 FROM debian:bookworm
 
 # INSTALL ALL PACKAGES NEEDED
-RUN apt-get -y update && apt-get -y upgrade
+RUN apt-get -y update
 RUN apt-get install -y nginx \
                         openssl \
                         curl \
