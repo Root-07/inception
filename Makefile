@@ -1,13 +1,15 @@
-# Variables
+
 DOCKER_COMPOSE = docker-compose
 DOCKER_COMPOSE_FILE = ./srcs/docker-compose.yml
 
-# Targets
-.PHONY: all build up down clean re
+
+.PHONY: all build up down clean fclean re
 
 all: build up
 
 build:
+	@mkdir -p /home/ael-amin/data/wordpress
+	@mkdir -p /home/ael-amin/data/mariadb
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) build
 
 up:
@@ -17,13 +19,13 @@ down:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) down -v
 
 clean: down
-# Ensure all containers are stopped and removed
 	@sudo rm -rf /home/ael-amin/data/mariadb/*
 	@sudo rm -rf /home/ael-amin/data/wordpress/*
-# Remove specific volumes if necessary
+
+fclean: clean
+	@sudo rm -rf /home/ael-amin/data/mariadb/*
+	@sudo rm -rf /home/ael-amin/data/wordpress/*
+	@docker system prune -a -f
 
 re: clean all
 
-#docker system df : status containers
-#docker system prune -f : remove all containers
-#docker rmi -f $(docker images -q) :remove all images
